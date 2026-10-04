@@ -1,5 +1,5 @@
-Bundled fonts (free to bundle and redistribute; each keeps its own license, separate from the plugin's license):
-delius-400.ttf            Delius by Natalia Raices             SIL Open Font License 1.1
-patrick-hand-400.ttf      Patrick Hand by Patrick Wagesreiter  SIL Open Font License 1.1
-permanent-marker-400.ttf  Permanent Marker by Font Diner       Apache License 2.0
-Source: Google Fonts (via the @fontsource packages), converted from woff2 to ttf.
+Bundled fonts. Each keeps its own license, separate from the plugin's license. All are free to bundle and redistribute.
+Delius            by Natalia Raices             SIL Open Font License 1.1
+Patrick Hand      by Patrick Wagesreiter        SIL Open Font License 1.1
+Permanent Marker  by Font Diner                 Apache License 2.0
+Source: Google Fonts (via the @fontsource packages), converted from WOFF2 to TrueType with no other change.
