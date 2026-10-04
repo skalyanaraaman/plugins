@@ -1,0 +1,18 @@
+{
+  "name": "spark-labs",
+  "owner": {"name": "Spark Labs", "email": "hello@pori.dev", "url": "https://pori.dev"},
+  "metadata": {"description": "Claude plugins for kids, families and teachers from Spark Labs.", "version": "1.0.0"},
+  "plugins": [
+    {
+      "name": "handwriting-storybook",
+      "source": "./plugins/handwriting-storybook",
+      "description": "Invents a funny new story and builds a printable handwriting storybook: dotted text to trace, pencil-sketch art, writing prompts and vocabulary on college-ruled pages.",
+      "version": "1.0.0",
+      "author": {"name": "Spark Labs", "email": "hello@pori.dev"},
+      "homepage": "https://pori.dev/skills",
+      "license": "PolyForm-Noncommercial-1.0.0",
+      "category": "education",
+      "keywords": ["handwriting", "kids", "education", "printable", "storybook", "worksheet"]
+    }
+  ]
+}

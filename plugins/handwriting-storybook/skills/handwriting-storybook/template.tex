@@ -1,0 +1,96 @@
+% handwriting-storybook engine. build_book.py fills in the font folder, the running title and the body.
+% Every baseline sits on a college-ruled line (9/32 in). Rows are always whole multiples of \pitch.
+\documentclass[12pt]{article}
+\usepackage{fontspec}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing}
+\usepackage{eso-pic}
+\newlength{\pitch}\setlength{\pitch}{0.28125in}% college ruled = 9/32 in
+\usepackage[paper=letterpaper,left=1.4in,right=0.5in,top=0.75in,height=33.5\pitch,nohead,nofoot]{geometry}
+\pagestyle{empty}\setlength{\parindent}{0pt}\setlength{\parskip}{0pt}
+\setlength{\topskip}{\pitch}\raggedbottom\sloppy
+\hyphenpenalty=10000 \exhyphenpenalty=10000
+
+\newfontfamily\trace[Path=@FONTDIR@/,Mapping=tex-text,LetterSpace=8,WordSpace=1.4]{delius-400.ttf}
+\newfontfamily\hand[Path=@FONTDIR@/,Mapping=tex-text]{patrick-hand-400.ttf}
+\newfontfamily\marker[Path=@FONTDIR@/,Mapping=tex-text]{permanent-marker-400.ttf}
+
+% dotted-outline text = tracing text (xdvipdfmx pdf:literal; Tr 1 = stroke only)
+\newcommand{\dotted}[1]{{\special{pdf:literal direct 1 Tr 0.7 w 1 J 1 j [0.01 1.9] 0 d 0.12 0.12 0.16 RG}#1\special{pdf:literal direct 0 Tr [] 0 d}}}
+\newcommand{\tracefont}{\trace\fontsize{16.5pt}{\pitch}\selectfont}
+\newcommand{\BOOKTITLE}{@BOOKTITLE@}
+\newcounter{pg}
+\newlength{\artw}
+
+% paper: college-ruled lines, red margin, punch holes, running header
+\AddToShipoutPictureBG{%
+\begin{tikzpicture}[remember picture,overlay,shift={(current page.north west)}]
+\foreach \k in {1,...,35}{\draw[color=blue!30!cyan!40!white,line width=0.45pt] (0,{-0.75in-\k*\pitch}) -- (\paperwidth,{-0.75in-\k*\pitch});}
+\draw[color=red!55!white,line width=0.6pt] (1.15in,0) -- (1.15in,-\paperheight);
+\foreach \hy in {2.2in,5.5in,8.8in}{\draw[color=black!25,fill=white,line width=0.5pt] (0.5in,-\hy) circle (0.11in);}
+\ifnum\value{page}>1
+\node[anchor=base west,inner sep=0pt] at (1.4in,-0.5in) {\hand\fontsize{11pt}{12pt}\selectfont\color{black!55}\BOOKTITLE};
+\node[anchor=base east,inner sep=0pt] at (8.0in,-0.5in) {\hand\fontsize{11pt}{12pt}\selectfont\color{black!55}page \the\numexpr\value{page}-1\relax};
+\fi
+\end{tikzpicture}}
+
+% art beside the text: \artbg{file}{R|L}{rows}
+\newcommand{\artbg}[3]{%
+\begin{tikzpicture}[remember picture,overlay,shift={(current page.north west)}]
+\ifx R#2\node[anchor=north east,inner sep=0pt] at (8.2in,{-0.75in-1*\pitch}) {\includegraphics[height=#3\pitch]{art/#1.png}};\else
+\node[anchor=north west,inner sep=0pt] at (1.2in,{-0.75in-1*\pitch}) {\includegraphics[height=#3\pitch]{art/#1.png}};\fi
+\end{tikzpicture}}
+
+% \entry{DAY LABEL}{art file}{R|L}{art rows}{story text = ONE paragraph, traced, wraps around the art}
+\newcommand{\entry}[5]{%
+\newpage\stepcounter{pg}%
+\AddToShipoutPictureBG*{\artbg{#2}{#3}{#4}}%
+\setlength{\artw}{\dimexpr#4\pitch*290/338\relax}%
+\noindent{\marker\fontsize{17pt}{\pitch}\selectfont #1}\par
+{\rightskip=0pt plus 1.6em \ifx R#3\hangindent=-\artw\else\hangindent=\artw\fi \hangafter=-#4 \noindent\dotted{\tracefont #5}\par
+\ifnum\prevgraf<#4 \count255=\numexpr#4-\prevgraf\relax \vskip\count255\pitch\fi}}
+
+% \entryd = same, but traced text on EVERY OTHER ruled line, bigger letters (ROOMY preset, about 70 words)
+\newcommand{\entryd}[5]{%
+\newpage\stepcounter{pg}%
+\AddToShipoutPictureBG*{\artbg{#2}{#3}{#4}}%
+\setlength{\artw}{\dimexpr#4\pitch*290/338\relax}%
+\noindent{\marker\fontsize{17pt}{\pitch}\selectfont #1}\par
+{\baselineskip=2\pitch \rightskip=0pt plus 1.6em \ifx R#3\hangindent=-\artw\else\hangindent=\artw\fi \hangafter=-\numexpr#4/2\relax \noindent\dotted{\trace\fontsize{18pt}{2\pitch}\selectfont #5}\par
+\count255=\numexpr#4/2\relax \ifnum\prevgraf<\count255 \count254=\numexpr\count255-\prevgraf\relax \vskip\count254\baselineskip\fi}}
+
+% \turnhead{prompt}, optional \starter{traced sentence start}, then \lines{n blank writing lines}
+\newcommand{\turnhead}[1]{\par\vskip\pitch\noindent{\marker\fontsize{12pt}{\pitch}\selectfont YOUR TURN:}\ {\hand\fontsize{14.5pt}{\pitch}\selectfont #1}\par}
+\newcommand{\starter}[1]{\par\noindent\dotted{\tracefont #1}\par}
+\newcommand{\lines}[1]{\par\vskip#1\pitch}
+% \drawbox{rows}{what to draw}
+\newcommand{\drawbox}[2]{\par\vskip\pitch\noindent
+\hbox to 0pt{\begin{tikzpicture}[overlay]
+\draw[decorate,decoration={random steps,segment length=5pt,amplitude=0.5pt},line width=0.9pt,draw=black!70,fill=white,rounded corners=3pt] (-0.05in,{0.8*\pitch}) rectangle ({\textwidth+0.05in},{-#1*\pitch});
+\node[anchor=base west,inner sep=0pt] at (0.12in,0) {\marker\fontsize{11pt}{13pt}\selectfont DRAW IT:\ \hand\fontsize{14pt}{16pt}\selectfont #2};
+\end{tikzpicture}\hss}\par\vskip#1\pitch}
+% \wizard{word}{word (noun): short meaning.}  word x3 and the meaning are both traced
+\newcommand{\wizard}[2]{\par\vskip\pitch\noindent{\marker\fontsize{11pt}{\pitch}\selectfont WORD WIZARD}\par
+\noindent\dotted{\trace\fontsize{17pt}{\pitch}\selectfont #1\quad #1\quad #1}\par
+\noindent\dotted{\trace\fontsize{14.5pt}{\pitch}\selectfont #2}\par}
+% \signline : Author / Date for the closing page
+\newcommand{\signline}{\par\vskip\pitch\noindent{\hand\fontsize{14pt}{\pitch}\selectfont Author:\ \rule[-3pt]{2.6in}{0.7pt}\quad Date:\ \rule[-3pt]{1.5in}{0.7pt}}\par}
+
+% \coverpage{small first line}{BIG TITLE}{big size in pt}{cover art file, 650x470 units}{tagline}
+\newcommand{\coverpage}[5]{%
+\AddToShipoutPictureBG*{\begin{tikzpicture}[remember picture,overlay,shift={(current page.north west)}]
+\node[anchor=base,inner sep=0pt] at (4.6in,{-0.75in-4*\pitch}) {\marker\fontsize{24pt}{28pt}\selectfont #1};
+\node[anchor=base,rotate=-3,inner sep=0pt] at (4.6in,{-0.75in-9*\pitch}) {\marker\fontsize{#3pt}{#3pt}\selectfont #2};
+\draw[decorate,decoration={random steps,segment length=6pt,amplitude=1.2pt},line width=1.6pt,color=black!75] (1.7in,{-0.75in-9.9*\pitch}) -- (7.5in,{-0.75in-10.25*\pitch});
+\node[anchor=north west,inner sep=0pt] at (1.0in,{-0.75in-11.4*\pitch}) {\includegraphics[width=6.5in]{art/#4.png}};
+\node[anchor=base,inner sep=0pt] at (4.6in,{-0.75in-30*\pitch}) {\marker\fontsize{13pt}{16pt}\selectfont #5};
+\node[anchor=base west,inner sep=0pt] at (1.42in,{-0.75in-32*\pitch}) {\hand\fontsize{16pt}{18pt}\selectfont This diary belongs to:\ \rule[-3pt]{3.4in}{0.7pt}};
+\node[anchor=base east,rotate=4,inner sep=0pt] at (8.0in,{-0.75in-2.2*\pitch}) {\hand\fontsize{15pt}{17pt}\selectfont color me in!};
+\end{tikzpicture}}\mbox{}}
+
+\begin{document}
+\fontsize{16pt}{\pitch}\selectfont\raggedright% REQUIRED: base line spacing = exactly one ruled line
+@BODY@
+\end{document}
