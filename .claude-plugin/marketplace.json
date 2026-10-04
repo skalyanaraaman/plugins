@@ -9,7 +9,7 @@
       "description": "Invents a funny new story and builds a printable handwriting storybook: dotted text to trace, pencil-sketch art, writing prompts and vocabulary on college-ruled pages.",
       "version": "1.0.0",
       "author": {"name": "Spark Labs", "email": "hello@pori.dev"},
-      "homepage": "https://pori.dev/skills",
+      "homepage": "https://pori.dev/skills/handwriting-storybook",
       "license": "PolyForm-Noncommercial-1.0.0",
       "category": "education",
       "keywords": ["handwriting", "kids", "education", "printable", "storybook", "worksheet"]
