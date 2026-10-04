@@ -21,4 +21,4 @@ are coming.
 
 ## License
 PolyForm Noncommercial 1.0.0. It is free for personal, family, classroom and school use. For commercial use, contact
-hello@pori.dev. More at [pori.dev/skills](https://pori.dev/skills).
+hello@pori.dev. More at [pori.dev/learn](https://pori.dev/learn).
