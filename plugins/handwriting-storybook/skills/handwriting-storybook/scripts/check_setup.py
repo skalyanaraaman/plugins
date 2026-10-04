@@ -15,18 +15,18 @@ def need(ok, name, mac_cmd, linux_cmd, why):
         missing.append((name, mac_cmd if mac else linux_cmd))
 
 need(shutil.which('xelatex') is not None, 'xelatex',
-     'brew install --cask basictex   (needs your password)  or  curl -sL https://yihui.org/tinytex/install-bin-unix.sh | sh   (no password)',
-     'sudo apt-get install -y texlive-xetex texlive-latex-extra',
+     'brew install --cask basictex   (or TinyTeX, which needs no admin rights: see https://yihui.org/tinytex/)',
+     'apt-get install -y texlive-xetex texlive-latex-extra   (run as administrator)',
      'typesets the book')
 if shutil.which('kpsewhich'):
     for pkg in ('fontspec', 'tikz', 'eso-pic', 'geometry', 'xcolor'):
         r = subprocess.run(['kpsewhich', f'{pkg}.sty'], capture_output=True, text=True)
         need(bool(r.stdout.strip()), f'  LaTeX package {pkg}', f'tlmgr install {"pgf" if pkg == "tikz" else pkg}',
              f'tlmgr install {"pgf" if pkg == "tikz" else pkg}', '')
-need(shutil.which('pdftoppm') is not None, 'pdftoppm (poppler)', 'brew install poppler', 'sudo apt-get install -y poppler-utils',
+need(shutil.which('pdftoppm') is not None, 'pdftoppm (poppler)', 'brew install poppler', 'apt-get install -y poppler-utils   (run as administrator)',
      'page previews and checks')
 need(bool(shutil.which('magick') or shutil.which('convert')), 'ImageMagick', 'brew install imagemagick',
-     'sudo apt-get install -y imagemagick', 'contact sheets')
+     'apt-get install -y imagemagick   (run as administrator)', 'contact sheets')
 pw = importlib.util.find_spec('playwright') is not None
 need(pw, 'Python playwright', 'python3 -m pip install --user playwright', 'python3 -m pip install --user playwright',
      'renders the pencil-sketch art')
