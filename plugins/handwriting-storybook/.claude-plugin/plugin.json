@@ -6,9 +6,9 @@
   "author": {
     "name": "Spark Labs",
     "email": "hello@pori.dev",
-    "url": "https://pori.dev"
+    "url": "https://www.pori.dev"
   },
-  "homepage": "https://pori.dev/learn/handwriting-storybook",
+  "homepage": "https://www.pori.dev/learn/handwriting-storybook",
   "repository": "https://github.com/skalyanaraaman/plugins",
   "license": "PolyForm-Noncommercial-1.0.0",
   "keywords": [
@@ -21,6 +21,6 @@
   ],
   "documentationUrl": "https://github.com/skalyanaraaman/plugins/tree/main/plugins/handwriting-storybook#readme",
   "supportUrl": "https://github.com/skalyanaraaman/plugins/issues",
-  "privacyPolicyUrl": "https://pori.dev/learn/privacy",
-  "termsOfServiceUrl": "https://pori.dev/learn/terms"
+  "privacyPolicyUrl": "https://www.pori.dev/learn/privacy",
+  "termsOfServiceUrl": "https://www.pori.dev/learn/terms"
 }
