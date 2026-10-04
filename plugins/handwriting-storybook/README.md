@@ -32,6 +32,19 @@ The skill works with local files only. It does not send data anywhere.
   First-time setup can download TeX (about 100 MB), Playwright, and Chromium (about 100 MB).
 - On claude.ai, these tools run in Claude's code-execution sandbox.
 
+## Bundled files
+The plugin ships three TrueType fonts. `template.tex` loads them through XeLaTeX to typeset the PDF, and
+`scripts/wrap.py` loads two of them in Chromium to letter the drawings. They are data only. Nothing executes them.
+Each one is the Google Fonts design from the `@fontsource` package, converted from WOFF2 to TTF with no other change.
+
+| File | Font | License | SHA-256 |
+|---|---|---|---|
+| `fonts/delius-400.ttf` | Delius | SIL OFL 1.1 | `20e2527a8e616dbdd65a45aab9e079cb2156b8452c33e2ad8fc13d9a4e3f7a4b` |
+| `fonts/patrick-hand-400.ttf` | Patrick Hand | SIL OFL 1.1 | `f4368b19bd9b8096bac2224a8d7ed9a4e1580a3a120a95001ec613afd944ff81` |
+| `fonts/permanent-marker-400.ttf` | Permanent Marker | Apache 2.0 | `c7827fe87873e2a0de1af16f50b37a8ccd27e10e9b9890296c2881936bc10e72` |
+
+The PNG images (`assets/sample-pages.png` and `.claude-plugin/icon.png`) appear only in this README and in the listing.
+
 ## License
 PolyForm Noncommercial 1.0.0. It is free for personal use, families, teachers, schools and other noncommercial
 organizations. For commercial use, contact hello@pori.dev. The bundled fonts keep their own open licenses
