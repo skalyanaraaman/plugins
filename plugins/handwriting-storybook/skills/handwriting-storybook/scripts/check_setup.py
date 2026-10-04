@@ -15,7 +15,7 @@ def need(ok, name, mac_cmd, linux_cmd, why):
         missing.append((name, mac_cmd if mac else linux_cmd))
 
 need(shutil.which('xelatex') is not None, 'xelatex',
-     'brew install --cask basictex   (or TinyTeX, which needs no admin rights: see https://yihui.org/tinytex/)',
+     'brew install --cask basictex   (or TinyTeX, which needs no admin rights)',
      'apt-get install -y texlive-xetex texlive-latex-extra   (run as administrator)',
      'typesets the book')
 if shutil.which('kpsewhich'):

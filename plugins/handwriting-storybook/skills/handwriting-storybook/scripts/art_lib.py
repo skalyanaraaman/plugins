@@ -95,7 +95,7 @@ OUTFITS = {  # drawn after the limbs, before the head
 def person(x, y, mood='happy', s=0.85, hair='none', extras=(), outfit='none', arms=ARMS, legs=LEGS,
            torso='M0 24 L0 70', flip=False, rot=0, front='', mouth=True):
     """Stick person, head centre at (x, y), about 140*s tall. hair: see HAIR. extras: see EXTRAS. outfit: see OUTFITS.
-    Long outfits (robe, toga) hide the legs; pass legs='M-10 104 L-10 110 M10 104 L10 110' for feet."""
+    Long outfits (robe, toga) hide the legs; set legs='M-10 104 L-10 110 M10 104 L10 110' for feet."""
     behind, top = HAIR[hair]
     ex = ''.join(EXTRAS[e] for e in extras)
     no_mouth = any(e in extras for e in ('stache', 'beard'))
